@@ -123,7 +123,36 @@ export async function writeConfig(config: Config): Promise<void> {
 }
 
 /**
+ * Migrate config from old version to current version
+ * Handles backwards compatibility when config schema changes
+ */
+function migrateConfig(config: unknown): Config {
+  const rawConfig = config as { version?: string };
+
+  // If no version field, assume v1.0 (current version)
+  if (!rawConfig.version) {
+    debug('No version field found, assuming v1.0');
+    const partialConfig = config as Partial<Config>;
+    return {
+      version: '1.0',
+      lastUsed: partialConfig.lastUsed || null,
+      providers: partialConfig.providers || [],
+    };
+  }
+
+  // Future migration logic would go here
+  // Example for v1.0 -> v2.0 migration:
+  // if (rawConfig.version === '1.0') {
+  //   return migrateV1ToV2(config);
+  // }
+
+  debug(`Config version: ${rawConfig.version} (no migration needed)`);
+  return config as Config;
+}
+
+/**
  * Load config from disk, or return default if it doesn't exist
+ * Automatically handles config version migrations
  */
 export async function loadConfig(): Promise<Config> {
   if (!configExists()) {
@@ -133,7 +162,16 @@ export async function loadConfig(): Promise<Config> {
     return defaultConfig;
   }
 
-  return readConfig();
+  const rawConfig = await readConfig();
+  const migratedConfig = migrateConfig(rawConfig);
+
+  // If config was migrated, save the new version
+  if (rawConfig.version !== migratedConfig.version) {
+    debug(`Migrating config from ${rawConfig.version} to ${migratedConfig.version}`);
+    await writeConfig(migratedConfig);
+  }
+
+  return migratedConfig;
 }
 
 /**

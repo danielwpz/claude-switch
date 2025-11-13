@@ -11,6 +11,7 @@ import { addProvider } from './actions/add-provider.js';
 import { addToken } from './actions/add-token.js';
 import { listConfigurations } from './actions/list.js';
 import { manageConfigurations } from './actions/manage.js';
+import { launchClaude } from './actions/claude.js';
 import { outputShellCommands } from './shell/export.js';
 import { setupPrompts } from './ui/prompts.js';
 import { debug } from './utils/logger.js';
@@ -56,6 +57,7 @@ USAGE:
 
 COMMANDS:
   init                  Initialize shell integration (one-time setup)
+  claude [ARGS]         Launch claude CLI with selected provider config
 
 OPTIONS:
   --silent              Suppress success messages (used by shell hook)
@@ -68,6 +70,8 @@ EXAMPLES:
   cswitch               Show main menu
   cswitch init          Set up shell integration
   cswitch --list        List all providers and tokens
+  cswitch claude        Launch claude with last-selected provider
+  cswitch claude -c     Launch claude with conversation mode
 
 CONFIGURATION:
   ~/.cswitch/config.json    Configuration file
@@ -81,6 +85,17 @@ For more information, visit: https://github.com/anthropics/cswitch
  */
 export async function main(): Promise<void> {
   setupPrompts();
+
+  const rawArgs = process.argv.slice(2);
+
+  // Check for claude subcommand first (before parseArgs)
+  if (rawArgs.length > 0 && rawArgs[0] === 'claude') {
+    debug('Running claude subcommand');
+    const config = await loadConfig();
+    const claudeArgs = rawArgs.slice(1);
+    await launchClaude(config, claudeArgs);
+    return;
+  }
 
   const args = parseArgs();
 
