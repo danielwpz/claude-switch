@@ -81,13 +81,8 @@ export async function addShellIntegration(profilePath: string): Promise<void> {
   debug(`Adding shell integration to: ${profilePath}`);
 
   try {
-    // Check if already installed
-    const alreadyInstalled = await isShellIntegrationInstalled(profilePath);
-
-    if (alreadyInstalled) {
-      info('Shell integration already installed');
-      return;
-    }
+    // Remove any existing integration first (prevents duplicates)
+    await removeShellIntegration(profilePath);
 
     // Append to profile
     await appendFile(profilePath, SHELL_INTEGRATION, 'utf-8');
