@@ -49,7 +49,9 @@ describe('Shell Output Contract', () => {
 
       const output = generateExportCommands(baseUrl, token);
 
-      expect(output).toContain('export ANTHROPIC_BASE_URL="https://api.provider-a.com/path?query=value&param=123"');
+      expect(output).toContain(
+        'export ANTHROPIC_BASE_URL="https://api.provider-a.com/path?query=value&param=123"'
+      );
     });
 
     it('should handle special characters in token', () => {

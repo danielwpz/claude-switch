@@ -155,7 +155,7 @@ export async function main(): Promise<void> {
   // Handle list
   if (args.list) {
     debug('Running list action');
-    await listConfigurations(config);
+    listConfigurations(config);
     return;
   }
 

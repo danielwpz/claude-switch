@@ -132,9 +132,7 @@ describe('Auto-Load Logic', () => {
         ],
       };
 
-      const provider = config.providers.find(
-        (p) => p.baseUrl === config.lastUsed?.providerUrl
-      );
+      const provider = config.providers.find((p) => p.baseUrl === config.lastUsed?.providerUrl);
 
       expect(provider).toBeUndefined();
     });
@@ -161,9 +159,7 @@ describe('Auto-Load Logic', () => {
         ],
       };
 
-      const provider = config.providers.find(
-        (p) => p.baseUrl === config.lastUsed?.providerUrl
-      );
+      const provider = config.providers.find((p) => p.baseUrl === config.lastUsed?.providerUrl);
 
       expect(provider).toBeDefined();
 
@@ -198,9 +194,7 @@ describe('Auto-Load Logic', () => {
         ],
       };
 
-      const provider = config.providers.find(
-        (p) => p.baseUrl === config.lastUsed?.providerUrl
-      );
+      const provider = config.providers.find((p) => p.baseUrl === config.lastUsed?.providerUrl);
 
       expect(provider).toBeDefined();
 
@@ -237,9 +231,7 @@ describe('Auto-Load Logic', () => {
         ],
       };
 
-      const provider = config.providers.find(
-        (p) => p.baseUrl === config.lastUsed?.providerUrl
-      );
+      const provider = config.providers.find((p) => p.baseUrl === config.lastUsed?.providerUrl);
 
       if (provider) {
         const token = provider.tokens.find((t) => t.alias === config.lastUsed?.tokenAlias);

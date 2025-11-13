@@ -50,10 +50,7 @@ export function validateBaseUrl(baseUrl: string): void {
     throw new ValidationError('Provider base URL cannot be empty', 'baseUrl');
   }
   if (!validateUrl(baseUrl)) {
-    throw new ValidationError(
-      'Provider base URL must be a valid HTTP or HTTPS URL',
-      'baseUrl'
-    );
+    throw new ValidationError('Provider base URL must be a valid HTTP or HTTPS URL', 'baseUrl');
   }
 }
 
@@ -77,9 +74,7 @@ export function validateTokenAliasUnique(
   alias: string,
   excludeAlias?: string
 ): void {
-  const existingAliases = provider.tokens
-    .map((t) => t.alias)
-    .filter((a) => a !== excludeAlias);
+  const existingAliases = provider.tokens.map((t) => t.alias).filter((a) => a !== excludeAlias);
 
   if (existingAliases.includes(alias)) {
     throw new ValidationError(
@@ -102,10 +97,7 @@ export function validateProviderUnique(
     .filter((url) => url !== excludeBaseUrl);
 
   if (existingUrls.includes(baseUrl)) {
-    throw new ValidationError(
-      `Provider with base URL "${baseUrl}" already exists`,
-      'baseUrl'
-    );
+    throw new ValidationError(`Provider with base URL "${baseUrl}" already exists`, 'baseUrl');
   }
 }
 
@@ -114,10 +106,7 @@ export function validateProviderUnique(
  */
 export function validateProviderHasTokens(provider: Provider): void {
   if (!provider.tokens || provider.tokens.length === 0) {
-    throw new ValidationError(
-      'Provider must have at least one token',
-      'tokens'
-    );
+    throw new ValidationError('Provider must have at least one token', 'tokens');
   }
 }
 
@@ -130,10 +119,7 @@ export function validateToken(token: Token): void {
 
   // Validate createdAt is a valid ISO 8601 timestamp
   if (!token.createdAt || isNaN(Date.parse(token.createdAt))) {
-    throw new ValidationError(
-      'Token createdAt must be a valid ISO 8601 timestamp',
-      'createdAt'
-    );
+    throw new ValidationError('Token createdAt must be a valid ISO 8601 timestamp', 'createdAt');
   }
 }
 
@@ -147,10 +133,7 @@ export function validateProvider(provider: Provider): void {
 
   // Validate createdAt
   if (!provider.createdAt || isNaN(Date.parse(provider.createdAt))) {
-    throw new ValidationError(
-      'Provider createdAt must be a valid ISO 8601 timestamp',
-      'createdAt'
-    );
+    throw new ValidationError('Provider createdAt must be a valid ISO 8601 timestamp', 'createdAt');
   }
 
   // Validate all tokens
@@ -160,10 +143,7 @@ export function validateProvider(provider: Provider): void {
   const aliases = provider.tokens.map((t) => t.alias);
   const uniqueAliases = new Set(aliases);
   if (aliases.length !== uniqueAliases.size) {
-    throw new ValidationError(
-      'Token aliases must be unique within a provider',
-      'tokens'
-    );
+    throw new ValidationError('Token aliases must be unique within a provider', 'tokens');
   }
 }
 
@@ -212,10 +192,7 @@ export function validateConfig(config: Config): void {
   const baseUrls = config.providers.map((p) => p.baseUrl);
   const uniqueBaseUrls = new Set(baseUrls);
   if (baseUrls.length !== uniqueBaseUrls.size) {
-    throw new ValidationError(
-      'Provider base URLs must be unique',
-      'providers'
-    );
+    throw new ValidationError('Provider base URLs must be unique', 'providers');
   }
 
   // Validate lastUsed if set

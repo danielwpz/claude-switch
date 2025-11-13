@@ -17,7 +17,10 @@ export class CswitchError extends Error {
  * Error thrown when configuration file is invalid or corrupted
  */
 export class ConfigError extends CswitchError {
-  constructor(message: string, public readonly filePath?: string) {
+  constructor(
+    message: string,
+    public readonly filePath?: string
+  ) {
     super(message);
     this.name = 'ConfigError';
   }
@@ -27,7 +30,10 @@ export class ConfigError extends CswitchError {
  * Error thrown when validation fails (URL format, alias uniqueness, etc.)
  */
 export class ValidationError extends CswitchError {
-  constructor(message: string, public readonly field?: string) {
+  constructor(
+    message: string,
+    public readonly field?: string
+  ) {
     super(message);
     this.name = 'ValidationError';
   }
@@ -37,7 +43,10 @@ export class ValidationError extends CswitchError {
  * Error thrown when a provider or token is not found
  */
 export class NotFoundError extends CswitchError {
-  constructor(message: string, public readonly identifier?: string) {
+  constructor(
+    message: string,
+    public readonly identifier?: string
+  ) {
     super(message);
     this.name = 'NotFoundError';
   }

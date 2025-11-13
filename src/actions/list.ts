@@ -10,7 +10,7 @@ import { debug } from '../utils/logger.js';
 /**
  * List all configurations (providers and tokens)
  */
-export async function listConfigurations(config: Config): Promise<void> {
+export function listConfigurations(config: Config): void {
   debug('Listing configurations');
 
   console.log('');
@@ -25,10 +25,6 @@ export async function listConfigurations(config: Config): Promise<void> {
   console.log('');
 
   console.log(
-    formatProviderList(
-      config.providers,
-      config.lastUsed?.providerUrl,
-      config.lastUsed?.tokenAlias
-    )
+    formatProviderList(config.providers, config.lastUsed?.providerUrl, config.lastUsed?.tokenAlias)
   );
 }

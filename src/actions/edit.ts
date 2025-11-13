@@ -3,7 +3,7 @@
  * Allows editing provider or token details
  */
 
-import { Config } from '../config/schema.js';
+import { Config, Provider, Token } from '../config/schema.js';
 import { selectProviderToManage } from '../menus/manage-menu.js';
 import { selectPrompt, textPrompt, passwordPrompt, PromptChoice } from '../ui/prompts.js';
 import { writeConfig } from '../config/config.js';
@@ -76,7 +76,7 @@ export async function editConfiguration(config: Config): Promise<void> {
   }
 }
 
-async function editProviderUrl(config: Config, provider: any): Promise<void> {
+async function editProviderUrl(config: Config, provider: Provider): Promise<void> {
   const newUrl = await textPrompt(
     'Enter new provider base URL:',
     provider.baseUrl,
@@ -88,9 +88,7 @@ async function editProviderUrl(config: Config, provider: any): Promise<void> {
         return 'Must be a valid HTTPS or HTTP URL';
       }
       // Check uniqueness (excluding current URL)
-      if (
-        config.providers.some((p) => p.baseUrl === value && p.baseUrl !== provider.baseUrl)
-      ) {
+      if (config.providers.some((p) => p.baseUrl === value && p.baseUrl !== provider.baseUrl)) {
         return 'This URL is already in use';
       }
       return true;
@@ -103,7 +101,7 @@ async function editProviderUrl(config: Config, provider: any): Promise<void> {
   }
 }
 
-async function editProviderName(provider: any): Promise<void> {
+async function editProviderName(provider: Provider): Promise<void> {
   const newName = await textPrompt(
     'Enter new provider display name (or leave blank to remove):',
     provider.displayName || ''
@@ -115,13 +113,13 @@ async function editProviderName(provider: any): Promise<void> {
   }
 }
 
-async function editTokenAlias(provider: any): Promise<void> {
+async function editTokenAlias(provider: Provider): Promise<void> {
   if (provider.tokens.length === 0) {
     console.log('✗ No tokens to edit');
     return;
   }
 
-  const choices: PromptChoice[] = provider.tokens.map((t: any) => ({
+  const choices: PromptChoice[] = provider.tokens.map((t: Token) => ({
     title: t.alias,
     value: t.alias,
   }));
@@ -129,28 +127,22 @@ async function editTokenAlias(provider: any): Promise<void> {
   const tokenAlias = await selectPrompt('Select token to rename:', choices);
   if (!tokenAlias) return;
 
-  const token = provider.tokens.find((t: any) => t.alias === tokenAlias);
+  const token = provider.tokens.find((t: Token) => t.alias === tokenAlias);
   if (!token) return;
 
-  const newAlias = await textPrompt(
-    'Enter new token alias:',
-    token.alias,
-    (value: string) => {
-      if (!value || value.trim().length === 0) {
-        return 'Alias is required';
-      }
-      if (value.length > 50) {
-        return 'Alias must be 50 characters or less';
-      }
-      // Check uniqueness within provider
-      if (
-        provider.tokens.some((t: any) => t.alias === value && t.alias !== token.alias)
-      ) {
-        return 'This alias already exists in this provider';
-      }
-      return true;
+  const newAlias = await textPrompt('Enter new token alias:', token.alias, (value: string) => {
+    if (!value || value.trim().length === 0) {
+      return 'Alias is required';
     }
-  );
+    if (value.length > 50) {
+      return 'Alias must be 50 characters or less';
+    }
+    // Check uniqueness within provider
+    if (provider.tokens.some((t: Token) => t.alias === value && t.alias !== token.alias)) {
+      return 'This alias already exists in this provider';
+    }
+    return true;
+  });
 
   if (newAlias) {
     token.alias = newAlias;
@@ -158,13 +150,13 @@ async function editTokenAlias(provider: any): Promise<void> {
   }
 }
 
-async function editTokenValue(provider: any): Promise<void> {
+async function editTokenValue(provider: Provider): Promise<void> {
   if (provider.tokens.length === 0) {
     console.log('✗ No tokens to edit');
     return;
   }
 
-  const choices: PromptChoice[] = provider.tokens.map((t: any) => ({
+  const choices: PromptChoice[] = provider.tokens.map((t: Token) => ({
     title: t.alias,
     value: t.alias,
   }));
@@ -172,7 +164,7 @@ async function editTokenValue(provider: any): Promise<void> {
   const tokenAlias = await selectPrompt('Select token to update:', choices);
   if (!tokenAlias) return;
 
-  const token = provider.tokens.find((t: any) => t.alias === tokenAlias);
+  const token = provider.tokens.find((t: Token) => t.alias === tokenAlias);
   if (!token) return;
 
   const newValue = await passwordPrompt('Enter new token value:', (value: string) => {

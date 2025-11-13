@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { Config, Provider } from '../../src/config/schema.js';
+import { Provider } from '../../src/config/schema.js';
 
 describe('Add Menu', () => {
   describe('Provider input validation', () => {

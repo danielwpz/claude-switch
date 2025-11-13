@@ -66,7 +66,9 @@ describe('Config Schema Contract', () => {
         createdAt: 'invalid-date',
       };
 
-      expect(() => validateToken(token)).toThrow('Token createdAt must be a valid ISO 8601 timestamp');
+      expect(() => validateToken(token)).toThrow(
+        'Token createdAt must be a valid ISO 8601 timestamp'
+      );
     });
   });
 
@@ -117,7 +119,9 @@ describe('Config Schema Contract', () => {
         ],
       };
 
-      expect(() => validateProvider(provider)).toThrow('Provider base URL must be a valid HTTP or HTTPS URL');
+      expect(() => validateProvider(provider)).toThrow(
+        'Provider base URL must be a valid HTTP or HTTPS URL'
+      );
     });
 
     it('should reject provider with no tokens', () => {
@@ -148,7 +152,9 @@ describe('Config Schema Contract', () => {
         ],
       };
 
-      expect(() => validateProvider(provider)).toThrow('Token aliases must be unique within a provider');
+      expect(() => validateProvider(provider)).toThrow(
+        'Token aliases must be unique within a provider'
+      );
     });
 
     it('should reject provider with displayName over 100 characters', () => {
@@ -165,7 +171,9 @@ describe('Config Schema Contract', () => {
         ],
       };
 
-      expect(() => validateProvider(provider)).toThrow('Provider display name must be 100 characters or less');
+      expect(() => validateProvider(provider)).toThrow(
+        'Provider display name must be 100 characters or less'
+      );
     });
   });
 

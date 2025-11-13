@@ -3,7 +3,7 @@
  * Allows deleting providers or tokens
  */
 
-import { Config } from '../config/schema.js';
+import { Config, Provider, Token } from '../config/schema.js';
 import { selectProviderToManage, confirmDeletion } from '../menus/manage-menu.js';
 import { selectPrompt, PromptChoice } from '../ui/prompts.js';
 import { writeConfig } from '../config/config.js';
@@ -59,7 +59,7 @@ export async function deleteConfiguration(config: Config): Promise<void> {
   }
 }
 
-async function deleteProvider(config: Config, provider: any): Promise<void> {
+async function deleteProvider(config: Config, provider: Provider): Promise<void> {
   const confirmed = await confirmDeletion(`${provider.displayName || provider.baseUrl}`);
   if (!confirmed) {
     console.log('Deletion cancelled');
@@ -80,7 +80,7 @@ async function deleteProvider(config: Config, provider: any): Promise<void> {
   }
 }
 
-async function deleteToken(config: Config, provider: any): Promise<void> {
+async function deleteToken(config: Config, provider: Provider): Promise<void> {
   if (provider.tokens.length === 0) {
     console.log('✗ No tokens to delete');
     return;
@@ -92,7 +92,7 @@ async function deleteToken(config: Config, provider: any): Promise<void> {
     return;
   }
 
-  const choices: PromptChoice[] = provider.tokens.map((t: any) => ({
+  const choices: PromptChoice[] = provider.tokens.map((t: Token) => ({
     title: t.alias,
     value: t.alias,
   }));
@@ -100,7 +100,7 @@ async function deleteToken(config: Config, provider: any): Promise<void> {
   const tokenAlias = await selectPrompt('Select token to delete:', choices);
   if (!tokenAlias) return;
 
-  const token = provider.tokens.find((t: any) => t.alias === tokenAlias);
+  const token = provider.tokens.find((t: Token) => t.alias === tokenAlias);
   if (!token) return;
 
   const confirmed = await confirmDeletion(tokenAlias);
@@ -110,7 +110,10 @@ async function deleteToken(config: Config, provider: any): Promise<void> {
   }
 
   // If this token is in lastUsed, clear lastUsed
-  if (config.lastUsed?.providerUrl === provider.baseUrl && config.lastUsed?.tokenAlias === tokenAlias) {
+  if (
+    config.lastUsed?.providerUrl === provider.baseUrl &&
+    config.lastUsed?.tokenAlias === tokenAlias
+  ) {
     config.lastUsed = null;
     console.log('⚠ Cleared last-used configuration');
   }

@@ -2,7 +2,7 @@
  * Unit tests for prompt helpers
  */
 
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { PromptChoice } from '../../src/ui/prompts.js';
 
 describe('Prompt Helpers', () => {

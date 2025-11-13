@@ -13,10 +13,7 @@ import { debug } from '../utils/logger.js';
  * Switch to a selected provider and token
  * Updates lastUsed in config and outputs shell commands
  */
-export async function switchConfiguration(
-  config: Config,
-  silent: boolean = false
-): Promise<void> {
+export async function switchConfiguration(config: Config, silent: boolean = false): Promise<void> {
   debug('Starting switch action');
 
   const selected = await selectConfiguration(config);
@@ -39,11 +36,5 @@ export async function switchConfiguration(
 
   // Output shell commands to be eval'd by parent shell
   const providerName = provider.displayName || provider.baseUrl;
-  outputShellCommands(
-    provider.baseUrl,
-    token.value,
-    providerName,
-    token.alias,
-    silent
-  );
+  outputShellCommands(provider.baseUrl, token.value, providerName, token.alias, silent);
 }

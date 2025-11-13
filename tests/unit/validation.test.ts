@@ -10,12 +10,10 @@ import {
   validateBaseUrl,
   validateDisplayName,
   validateToken,
-  validateProvider,
   validateTokenAliasUnique,
   validateProviderUnique,
 } from '../../src/config/validation.js';
 import { Config, Provider, Token } from '../../src/config/schema.js';
-import { ValidationError } from '../../src/utils/errors.js';
 
 describe('Validation Module', () => {
   describe('URL validation', () => {
@@ -50,7 +48,9 @@ describe('Validation Module', () => {
     });
 
     it('should reject alias over 50 characters', () => {
-      expect(() => validateAlias('a'.repeat(51))).toThrow('Token alias must be 50 characters or less');
+      expect(() => validateAlias('a'.repeat(51))).toThrow(
+        'Token alias must be 50 characters or less'
+      );
     });
 
     it('should accept alias at boundary (50 characters)', () => {
@@ -68,7 +68,9 @@ describe('Validation Module', () => {
     });
 
     it('should reject token value under 10 characters', () => {
-      expect(() => validateTokenValue('short')).toThrow('Token value must be at least 10 characters');
+      expect(() => validateTokenValue('short')).toThrow(
+        'Token value must be at least 10 characters'
+      );
     });
 
     it('should accept token value at boundary (10 characters)', () => {
@@ -130,7 +132,9 @@ describe('Validation Module', () => {
         createdAt: 'invalid',
       };
 
-      expect(() => validateToken(token)).toThrow('Token createdAt must be a valid ISO 8601 timestamp');
+      expect(() => validateToken(token)).toThrow(
+        'Token createdAt must be a valid ISO 8601 timestamp'
+      );
     });
   });
 
@@ -154,9 +158,7 @@ describe('Validation Module', () => {
         ],
       };
 
-      expect(() =>
-        validateProviderUnique(config, 'https://api.provider-b.com')
-      ).not.toThrow();
+      expect(() => validateProviderUnique(config, 'https://api.provider-b.com')).not.toThrow();
     });
 
     it('should reject duplicate provider URL', () => {
@@ -178,9 +180,9 @@ describe('Validation Module', () => {
         ],
       };
 
-      expect(() =>
-        validateProviderUnique(config, 'https://api.provider-a.com')
-      ).toThrow('Provider with base URL');
+      expect(() => validateProviderUnique(config, 'https://api.provider-a.com')).toThrow(
+        'Provider with base URL'
+      );
     });
   });
 
@@ -198,9 +200,7 @@ describe('Validation Module', () => {
         ],
       };
 
-      expect(() =>
-        validateTokenAliasUnique(provider, 'personal-account')
-      ).not.toThrow();
+      expect(() => validateTokenAliasUnique(provider, 'personal-account')).not.toThrow();
     });
 
     it('should reject duplicate token alias', () => {
@@ -216,9 +216,7 @@ describe('Validation Module', () => {
         ],
       };
 
-      expect(() =>
-        validateTokenAliasUnique(provider, 'work-account')
-      ).toThrow('Token alias');
+      expect(() => validateTokenAliasUnique(provider, 'work-account')).toThrow('Token alias');
     });
 
     it('should allow re-using alias when excluding current', () => {

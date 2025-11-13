@@ -69,8 +69,9 @@ export function getActionDescription(action: MenuAction): string {
       return 'Manage configurations';
     case null:
       return 'Cancelled';
-    default:
+    default: {
       const _exhaustive: never = action;
       return _exhaustive;
+    }
   }
 }

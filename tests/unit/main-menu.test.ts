@@ -30,7 +30,7 @@ describe('Main Menu', () => {
   });
 
   describe('showMainMenu behavior', () => {
-    it('should be callable with valid config', async () => {
+    it('should be callable with valid config', () => {
       const config: Config = {
         version: '1.0',
         lastUsed: null,

@@ -52,10 +52,7 @@ export async function selectToken(provider: Provider): Promise<Token | null> {
     description: `Added: ${new Date(token.createdAt).toLocaleDateString()}`,
   }));
 
-  const selectedAlias = await selectPrompt(
-    'Select a token:',
-    choices
-  );
+  const selectedAlias = await selectPrompt('Select a token:', choices);
 
   if (!selectedAlias) {
     debug('User cancelled token selection');

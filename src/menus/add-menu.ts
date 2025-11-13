@@ -67,18 +67,15 @@ export async function promptTokenAlias(defaultValue?: string): Promise<string | 
 export async function promptTokenValue(): Promise<string | null> {
   debug('Prompting for token value');
 
-  const token = await passwordPrompt(
-    'Enter auth token (hidden):',
-    (value: string) => {
-      if (!value || value.trim().length === 0) {
-        return 'Token value is required';
-      }
-      if (value.length < 10) {
-        return 'Token value must be at least 10 characters';
-      }
-      return true;
+  const token = await passwordPrompt('Enter auth token (hidden):', (value: string) => {
+    if (!value || value.trim().length === 0) {
+      return 'Token value is required';
     }
-  );
+    if (value.length < 10) {
+      return 'Token value must be at least 10 characters';
+    }
+    return true;
+  });
 
   return token;
 }

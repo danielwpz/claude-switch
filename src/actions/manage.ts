@@ -20,7 +20,7 @@ export async function manageConfigurations(config: Config): Promise<void> {
 
   switch (action) {
     case 'list':
-      await listConfigurations(config);
+      listConfigurations(config);
       break;
     case 'edit':
       await editConfiguration(config);

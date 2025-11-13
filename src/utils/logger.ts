@@ -57,10 +57,7 @@ export function error(message: string, ...args: unknown[]): void {
 /**
  * Measure execution time of a function
  */
-export async function measure<T>(
-  label: string,
-  fn: () => T | Promise<T>
-): Promise<T> {
+export async function measure<T>(label: string, fn: () => T | Promise<T>): Promise<T> {
   if (!DEBUG_ENABLED) {
     return fn();
   }

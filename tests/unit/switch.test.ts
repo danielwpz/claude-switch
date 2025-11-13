@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { Config, Provider, Token } from '../../src/config/schema.js';
+import { Config, Provider } from '../../src/config/schema.js';
 
 describe('Switch Action', () => {
   describe('Config updates', () => {
@@ -101,9 +101,7 @@ describe('Switch Action', () => {
         ],
       };
 
-      const provider = config.providers.find(
-        (p) => p.baseUrl === 'https://api.provider-a.com'
-      );
+      const provider = config.providers.find((p) => p.baseUrl === 'https://api.provider-a.com');
 
       expect(provider).toBeDefined();
       expect(provider?.baseUrl).toBe('https://api.provider-a.com');

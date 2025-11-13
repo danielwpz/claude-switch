@@ -51,10 +51,7 @@ export function formatProviderChoice(provider: Provider, isActive: boolean = fal
 /**
  * Format a token display for selection menus
  */
-export function formatTokenChoice(
-  token: Token,
-  isActive: boolean = false
-): string {
+export function formatTokenChoice(token: Token, isActive: boolean = false): string {
   const activeIndicator = isActive ? chalk.green(' ✓ (active)') : '';
   const createdDate = new Date(token.createdAt).toLocaleDateString();
 
@@ -110,10 +107,7 @@ export function formatProviderRow(
 /**
  * Format a table row for token listing
  */
-export function formatTokenRow(
-  token: Token,
-  isActive: boolean = false
-): string {
+export function formatTokenRow(token: Token, isActive: boolean = false): string {
   const activeIndicator = isActive ? chalk.green('✓') : ' ';
   const createdDate = new Date(token.createdAt).toLocaleDateString();
 

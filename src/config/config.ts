@@ -71,16 +71,10 @@ export async function readConfig(): Promise<Config> {
       return config;
     } catch (error) {
       if (error instanceof SyntaxError) {
-        throw new ConfigError(
-          `Config file is not valid JSON: ${error.message}`,
-          configPath
-        );
+        throw new ConfigError(`Config file is not valid JSON: ${error.message}`, configPath);
       }
       if (error instanceof Error) {
-        throw new ConfigError(
-          `Failed to read config file: ${error.message}`,
-          configPath
-        );
+        throw new ConfigError(`Failed to read config file: ${error.message}`, configPath);
       }
       throw error;
     }
@@ -121,10 +115,7 @@ export async function writeConfig(config: Config): Promise<void> {
       debug(`Config written to: ${configPath}`);
     } catch (error) {
       if (error instanceof Error) {
-        throw new ConfigError(
-          `Failed to write config file: ${error.message}`,
-          configPath
-        );
+        throw new ConfigError(`Failed to write config file: ${error.message}`, configPath);
       }
       throw error;
     }

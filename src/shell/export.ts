@@ -27,10 +27,7 @@ export function generateExportCommands(baseUrl: string, token: string): string {
  * Generate echo message to show user what was set
  * This is appended after the export commands
  */
-export function generateSuccessMessage(
-  providerName: string,
-  tokenAlias: string
-): string {
+export function generateSuccessMessage(providerName: string, tokenAlias: string): string {
   return `echo "✓ Switched to ${providerName} - ${tokenAlias}"`;
 }
 
