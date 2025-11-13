@@ -17,10 +17,12 @@ const SHELL_INTEGRATION = `
 cswitch() {
   local output=$(command cswitch "$@")
   local exit_code=$?
-  if [ $exit_code -eq 0 ]; then
+
+  # Only eval output if it contains exports (skip for init, help, list, etc.)
+  if [ $exit_code -eq 0 ] && echo "$output" | grep -q "export ANTHROPIC"; then
     eval "$output"
   else
-    echo "$output" >&2
+    echo "$output"
     return $exit_code
   fi
 }
