@@ -40,7 +40,7 @@ description: "Task list for Claude environment switcher implementation"
 - [X] T006 [P] Configure testing (vitest.config.ts with TypeScript support)
 - [X] T007 Create build script and npm scripts in package.json (build, test, lint, format, start)
 - [X] T008 [P] Create bin/cswitch shell script wrapper that calls node dist/index.js
-- [ ] T009 Initialize git and commit setup tasks
+- [X] T009 Initialize git and commit setup tasks
 
 ---
 
@@ -50,20 +50,20 @@ description: "Task list for Claude environment switcher implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T010 [P] Implement Config type definitions in src/config/schema.ts (Provider, Token, LastUsed, Config interfaces)
-- [ ] T011 [P] Implement configuration file I/O in src/config/config.ts (read, write, load from ~/.cswitch/config.json)
-- [ ] T012 [P] Implement config validation logic in src/config/validation.ts (URL format, alias uniqueness, required fields)
-- [ ] T013 [P] Implement shared prompt helpers in src/ui/prompts.ts (wrapper around prompts library)
-- [ ] T014 [P] Implement display formatters in src/ui/formatters.ts (color output, table formatting, status indicators)
-- [ ] T015 [P] Implement error classes in src/utils/errors.ts (ConfigError, ValidationError, NotFoundError)
-- [ ] T016 [P] Implement logger utility in src/utils/logger.ts (with CSWITCH_DEBUG env var support)
-- [ ] T017 Create contract test for config schema validation in tests/contract/config-schema.test.ts
-- [ ] T018 Create contract test for shell output format in tests/contract/shell-output-contract.test.ts
-- [ ] T019 Implement shell export command generator in src/shell/export.ts (outputs "export ANTHROPIC_BASE_URL=..." format)
-- [ ] T020 Implement shell initialization setup in src/shell/init.ts (adds function and hook to ~/.zshrc or ~/.bashrc)
-- [ ] T021 [P] Create unit tests for config module in tests/unit/config.test.ts
-- [ ] T022 [P] Create unit tests for validation module in tests/unit/validation.test.ts
-- [ ] T023 [P] Create unit tests for prompt helpers in tests/unit/prompts.test.ts
+- [X] T010 [P] Implement Config type definitions in src/config/schema.ts (Provider, Token, LastUsed, Config interfaces)
+- [X] T011 [P] Implement configuration file I/O in src/config/config.ts (read, write, load from ~/.cswitch/config.json)
+- [X] T012 [P] Implement config validation logic in src/config/validation.ts (URL format, alias uniqueness, required fields)
+- [X] T013 [P] Implement shared prompt helpers in src/ui/prompts.ts (wrapper around prompts library)
+- [X] T014 [P] Implement display formatters in src/ui/formatters.ts (color output, table formatting, status indicators)
+- [X] T015 [P] Implement error classes in src/utils/errors.ts (ConfigError, ValidationError, NotFoundError)
+- [X] T016 [P] Implement logger utility in src/utils/logger.ts (with CSWITCH_DEBUG env var support)
+- [X] T017 Create contract test for config schema validation in tests/contract/config-schema.test.ts
+- [X] T018 Create contract test for shell output format in tests/contract/shell-output-contract.test.ts
+- [X] T019 Implement shell export command generator in src/shell/export.ts (outputs "export ANTHROPIC_BASE_URL=..." format)
+- [X] T020 Implement shell initialization setup in src/shell/init.ts (adds function and hook to ~/.zshrc or ~/.bashrc)
+- [X] T021 [P] Create unit tests for config module in tests/unit/config.test.ts
+- [X] T022 [P] Create unit tests for validation module in tests/unit/validation.test.ts
+- [X] T023 [P] Create unit tests for prompt helpers in tests/unit/prompts.test.ts
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
