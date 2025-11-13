@@ -14,19 +14,6 @@ import { debug, info } from '../utils/logger.js';
  */
 const SHELL_INTEGRATION = `
 # === cswitch shell integration (start) ===
-cswitch() {
-  local output=$(command cswitch "$@")
-  local exit_code=$?
-
-  # Only eval output if it contains exports (skip for init, help, list, etc.)
-  if [ $exit_code -eq 0 ] && echo "$output" | grep -q "export ANTHROPIC"; then
-    eval "$output"
-  else
-    echo "$output"
-    return $exit_code
-  fi
-}
-
 # Auto-load last used configuration
 if [ -f ~/.cswitch/config.json ]; then
   eval "$(cswitch --silent --auto-load 2>/dev/null)" || true
@@ -109,30 +96,36 @@ export async function removeShellIntegration(profilePath: string): Promise<void>
       return;
     }
 
-    const content = await readFile(profilePath, 'utf-8');
-
-    // Remove the integration block
+    let content = await readFile(profilePath, 'utf-8');
     const startMarker = '# === cswitch shell integration (start) ===';
     const endMarker = '# === cswitch shell integration (end) ===';
 
-    const startIndex = content.indexOf(startMarker);
-    if (startIndex === -1) {
+    let found = false;
+    let startIndex = content.indexOf(startMarker);
+
+    // Remove ALL occurrences of the integration block (handles duplicates)
+    while (startIndex !== -1) {
+      const endIndex = content.indexOf(endMarker, startIndex);
+      if (endIndex === -1) {
+        throw new Error('Shell integration block is malformed (missing end marker)');
+      }
+
+      // Remove the block including the end marker line
+      const before = content.substring(0, startIndex);
+      const after = content.substring(endIndex + endMarker.length);
+      content = before + after;
+      found = true;
+
+      // Look for next occurrence
+      startIndex = content.indexOf(startMarker);
+    }
+
+    if (found) {
+      await writeFile(profilePath, content, 'utf-8');
+      info(`Shell integration removed from: ${profilePath}`);
+    } else {
       info('Shell integration not found, nothing to remove');
-      return;
     }
-
-    const endIndex = content.indexOf(endMarker, startIndex);
-    if (endIndex === -1) {
-      throw new Error('Shell integration block is malformed (missing end marker)');
-    }
-
-    // Remove the block including the end marker line
-    const before = content.substring(0, startIndex);
-    const after = content.substring(endIndex + endMarker.length);
-    const newContent = before + after;
-
-    await writeFile(profilePath, newContent, 'utf-8');
-    info(`Shell integration removed from: ${profilePath}`);
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Failed to remove shell integration: ${error.message}`);
