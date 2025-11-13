@@ -34,14 +34,20 @@ export async function launchClaude(config: Config, args: string[]): Promise<void
     ANTHROPIC_AUTH_TOKEN: token.value,
   };
 
+  // Print provider and token info to console
+  const providerName = provider.displayName || provider.baseUrl;
+  console.log(`→ Using provider: ${providerName} | Token: ${token.alias}`);
+
   debug(`Launching claude with provider: ${provider.baseUrl}`);
   debug(`Token alias: ${token.alias}`);
   debug(`Args: ${args.join(' ')}`);
 
   // Spawn claude process with inherited stdio for full interactivity
-  const child = spawn('claude', args, {
+  // Use 'command' builtin to bypass any alias resolution (prevents loops if user aliases claude -> cswitch claude)
+  const child = spawn('command', ['claude', ...args], {
     env,
     stdio: 'inherit',
+    shell: true,
   });
 
   // Wait for process to exit
