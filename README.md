@@ -36,7 +36,14 @@ npm install -g ./
 
 ## Quick Start
 
-### 1. Add your first provider
+### 1. Initialize shell integration (one-time)
+
+```bash
+cswitch init
+# Adds auto-load hook to ~/.zshrc or ~/.bashrc
+```
+
+### 2. Add your first provider
 
 ```bash
 cswitch
@@ -46,23 +53,18 @@ cswitch
 → Enter authentication token
 ```
 
-### 2. Switch to a provider
+### 3. Switch providers and launch Claude
 
 ```bash
+# Option A: Launch Claude with selected provider
+cswitch claude              # Shows menu to select provider, launches claude
+cswitch claude -c           # Same, with conversation mode
+
+# Option B: Switch provider, then use it
 cswitch
 → Select "Switch configuration"
-→ Choose provider
-→ Choose token
-```
-
-Exports `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN` to your shell.
-
-### 3. Launch Claude with selected provider
-
-```bash
-cswitch claude              # Launch Claude (fully interactive)
-cswitch claude -c           # Launch Claude in conversation mode
-cswitch claude chat [args]  # Launch with additional arguments
+→ Choose provider and token
+# Next shell session will auto-load this provider's env vars
 ```
 
 ## Usage
@@ -92,6 +94,40 @@ CSWITCH_DEBUG=1 cswitch
 - **Add provider** - Create a new provider with initial token
 - **Add token** - Add additional token to existing provider
 - **Manage configurations** - View, edit, or delete providers/tokens
+
+## Shell Integration
+
+Run `cswitch init` once to add auto-load to your shell profile. This adds:
+
+```bash
+# Auto-load last used configuration on shell startup
+if [ -f ~/.cswitch/config.json ]; then
+  eval "$(cswitch --silent --auto-load 2>/dev/null)" || true
+fi
+```
+
+**How it works:**
+1. When you start a new shell, the last selected provider's env vars are automatically loaded
+2. You can switch providers anytime with `cswitch`
+3. For immediate use in current shell, use `cswitch claude` to launch Claude with env vars
+
+### Optional: Alias for convenience
+
+Add this alias to your `~/.zshrc` or `~/.bashrc` to use `claude` directly:
+
+```bash
+alias claude='cswitch claude'
+```
+
+Now you can run `claude` instead of `cswitch claude`:
+
+```bash
+claude chat          # Launches claude CLI with your selected provider
+claude -c            # Conversation mode
+→ Using provider: Anthropic | Token: personal
+```
+
+**Note:** This is safe from infinite loops - `cswitch` uses the `command` builtin internally to bypass alias resolution.
 
 ## Configuration
 
