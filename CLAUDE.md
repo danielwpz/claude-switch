@@ -27,3 +27,4 @@ Node.js 18+ with TypeScript 5.x (for type safety and modern ECMAScript features)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
+- when you build, lint, always do npm install -g ./ as well
