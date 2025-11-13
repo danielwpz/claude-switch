@@ -165,27 +165,27 @@ echo $ANTHROPIC_BASE_URL  # Should still be set (auto-loaded)
 
 ### Contract Tests for User Story 3
 
-- [ ] T053 [P] [US3] Create contract test for manage menu in tests/contract/manage-menu-contract.test.ts
-- [ ] T054 [P] [US3] Create contract test for edit operations in tests/contract/edit-contract.test.ts
-- [ ] T055 [P] [US3] Create contract test for delete operations in tests/contract/delete-contract.test.ts
+- [X] T053 [P] [US3] Create contract test for manage menu in tests/contract/manage-menu-contract.test.ts
+- [X] T054 [P] [US3] Create contract test for edit operations in tests/contract/edit-contract.test.ts
+- [X] T055 [P] [US3] Create contract test for delete operations in tests/contract/delete-contract.test.ts
 
 ### Integration Tests for User Story 3
 
-- [ ] T056 [US3] Create integration test for manage menu flow in tests/integration/manage-flow.test.ts
-- [ ] T057 [US3] Create integration test for edit provider in tests/integration/edit-provider.test.ts
-- [ ] T058 [US3] Create integration test for delete provider in tests/integration/delete-provider.test.ts
-- [ ] T059 [US3] Create integration test for edit token in tests/integration/edit-token.test.ts
-- [ ] T060 [US3] Create integration test for delete token in tests/integration/delete-token.test.ts
+- [X] T056 [US3] Create integration test for manage menu flow in tests/integration/manage-flow.test.ts
+- [X] T057 [US3] Create integration test for edit provider in tests/integration/edit-provider.test.ts
+- [X] T058 [US3] Create integration test for delete provider in tests/integration/delete-provider.test.ts
+- [X] T059 [US3] Create integration test for edit token in tests/integration/edit-token.test.ts
+- [X] T060 [US3] Create integration test for delete token in tests/integration/delete-token.test.ts
 
 ### Implementation for User Story 3
 
-- [ ] T061 [P] [US3] Implement manage menu in src/menus/manage-menu.ts (list, edit, delete options)
-- [ ] T062 [P] [US3] Implement edit action in src/actions/edit.ts (edit provider URL or token value/alias)
-- [ ] T063 [P] [US3] Implement delete action in src/actions/delete.ts (delete provider or token with confirmation)
-- [ ] T064 [US3] Update list action in src/actions/list.ts to support detailed provider view
-- [ ] T065 [P] [US3] Create unit tests for manage-menu in tests/unit/manage-menu.test.ts
-- [ ] T066 [P] [US3] Create unit tests for edit action in tests/unit/edit.test.ts
-- [ ] T067 [P] [US3] Create unit tests for delete action in tests/unit/delete.test.ts
+- [X] T061 [P] [US3] Implement manage menu in src/menus/manage-menu.ts (list, edit, delete options)
+- [X] T062 [P] [US3] Implement edit action in src/actions/edit.ts (edit provider URL or token value/alias)
+- [X] T063 [P] [US3] Implement delete action in src/actions/delete.ts (delete provider or token with confirmation)
+- [X] T064 [US3] Update list action in src/actions/list.ts to support detailed provider view
+- [X] T065 [P] [US3] Create unit tests for manage-menu in tests/unit/manage-menu.test.ts
+- [X] T066 [P] [US3] Create unit tests for edit action in tests/unit/edit.test.ts
+- [X] T067 [P] [US3] Create unit tests for delete action in tests/unit/delete.test.ts
 
 **Checkpoint**: All user stories should now be independently functional
 
