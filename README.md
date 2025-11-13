@@ -1,6 +1,6 @@
-# cswitch - Claude API Provider Manager
+# cswitch - Claude Code Provider Manager
 
-Quickly switch between multiple Claude API providers and authentication tokens without manual environment variable editing.
+Quickly switch between multiple Claude Code API providers and authentication tokens without manual environment variable editing.
 
 ## Features
 
@@ -9,14 +9,12 @@ Quickly switch between multiple Claude API providers and authentication tokens w
 - **Interactive Menu**: User-friendly CLI with colored output
 - **Direct Integration**: `cswitch claude` launches Claude with your selected provider
 - **Config Management**: Edit, delete, and organize providers/tokens
-- **Security**: Config file stored with restricted permissions (chmod 600)
-- **Debug Support**: Optional verbose logging with `CSWITCH_DEBUG=1`
 
 ## Installation
 
 ```bash
 git clone git@github.com:danielwpz/claude-switch.git
-cd cswitch
+cd claude-switch
 
 npm install
 npm run build
