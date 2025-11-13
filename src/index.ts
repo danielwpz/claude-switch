@@ -192,13 +192,17 @@ export async function main(): Promise<void> {
       break;
     case null:
       debug('User cancelled main menu');
-      process.exit(0);
       break;
   }
+
+  // Exit cleanly
+  process.exit(0);
 }
 
-// Run main function
-main().catch((error) => {
-  console.error('Fatal error:', error);
-  process.exit(1);
-});
+// Auto-run main if this file is executed directly (not imported as module)
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch((error) => {
+    console.error('Fatal error:', error);
+    process.exit(1);
+  });
+}
