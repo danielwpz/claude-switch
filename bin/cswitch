@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+// Shell wrapper for cswitch CLI
+// This script is the entry point called by npm/npx
+
+import('../dist/index.js')
+  .then((module) => {
+    // Run the main function
+    if (module.main) {
+      return module.main();
+    }
+  })
+  .catch((error) => {
+    console.error('Error loading cswitch:', error);
+    process.exit(1);
+  });

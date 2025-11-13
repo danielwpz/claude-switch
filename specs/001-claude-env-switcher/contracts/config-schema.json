@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/your-org/claude-switch/config-schema.json",
+  "title": "CSwitch Configuration",
+  "description": "Configuration schema for Claude environment switcher",
+  "type": "object",
+  "required": ["version", "lastUsed", "providers"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "enum": ["1.0"],
+      "description": "Schema version for future compatibility"
+    },
+    "lastUsed": {
+      "oneOf": [
+        {
+          "type": "null",
+          "description": "No configuration has been selected yet"
+        },
+        {
+          "type": "object",
+          "required": ["providerUrl", "tokenAlias"],
+          "properties": {
+            "providerUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://",
+              "description": "Base URL of the last-used provider"
+            },
+            "tokenAlias": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50,
+              "description": "Alias of the last-used token"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "providers": {
+      "type": "array",
+      "description": "List of Claude API providers",
+      "items": {
+        "$ref": "#/definitions/provider"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "provider": {
+      "type": "object",
+      "required": ["baseUrl", "createdAt", "tokens"],
+      "properties": {
+        "baseUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://",
+          "description": "ANTHROPIC_BASE_URL value (unique identifier for provider)"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Optional human-friendly name for the provider"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when provider was added"
+        },
+        "tokens": {
+          "type": "array",
+          "description": "Authentication tokens for this provider",
+          "items": {
+            "$ref": "#/definitions/token"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "token": {
+      "type": "object",
+      "required": ["alias", "value", "createdAt"],
+      "properties": {
+        "alias": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50,
+          "description": "Human-friendly identifier for the token (unique within provider)"
+        },
+        "value": {
+          "type": "string",
+          "minLength": 10,
+          "description": "ANTHROPIC_AUTH_TOKEN value"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when token was added"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
