@@ -128,22 +128,22 @@ cswitch  # See main menu
 
 ### Contract Tests for User Story 2
 
-- [ ] T043 [P] [US2] Create contract test for auto-load in tests/contract/auto-load-contract.test.ts (--silent --auto-load outputs correct exports)
-- [ ] T044 [P] [US2] Create contract test for lastUsed persistence in tests/contract/last-used-persistence.test.ts
+- [X] T043 [P] [US2] Create contract test for auto-load in tests/contract/auto-load-contract.test.ts (--silent --auto-load outputs correct exports)
+- [X] T044 [P] [US2] Create contract test for lastUsed persistence in tests/contract/last-used-persistence.test.ts
 
 ### Integration Tests for User Story 2
 
-- [ ] T045 [US2] Create integration test for auto-load flow in tests/integration/auto-load.test.ts
-- [ ] T046 [US2] Create integration test for persist lastUsed in tests/integration/persist-last-used.test.ts
+- [X] T045 [US2] Create integration test for auto-load flow in tests/integration/auto-load.test.ts
+- [X] T046 [US2] Create integration test for persist lastUsed in tests/integration/persist-last-used.test.ts
 
 ### Implementation for User Story 2
 
-- [ ] T047 [P] [US2] Implement list action in src/actions/list.ts (display all providers and tokens with active indicators)
-- [ ] T048 [US2] Update switch action in src/actions/switch.ts to persist selected config to lastUsed field
-- [ ] T049 [US2] Implement auto-load flag handling in src/index.ts (--silent --auto-load mode)
-- [ ] T050 [US2] Update shell initialization in src/shell/init.ts to add auto-load hook to ~/.zshrc
-- [ ] T051 [P] [US2] Create unit tests for list action in tests/unit/list.test.ts
-- [ ] T052 [P] [US2] Create unit tests for auto-load logic in tests/unit/auto-load.test.ts
+- [X] T047 [P] [US2] Implement list action in src/actions/list.ts (display all providers and tokens with active indicators)
+- [X] T048 [US2] Update switch action in src/actions/switch.ts to persist selected config to lastUsed field
+- [X] T049 [US2] Implement auto-load flag handling in src/index.ts (--silent --auto-load mode)
+- [X] T050 [US2] Update shell initialization in src/shell/init.ts to add auto-load hook to ~/.zshrc
+- [X] T051 [P] [US2] Create unit tests for list action in tests/unit/list.test.ts
+- [X] T052 [P] [US2] Create unit tests for auto-load logic in tests/unit/auto-load.test.ts
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 

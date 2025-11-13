@@ -9,6 +9,7 @@ import { showMainMenu } from './menus/main-menu.js';
 import { switchConfiguration } from './actions/switch.js';
 import { addProvider } from './actions/add-provider.js';
 import { addToken } from './actions/add-token.js';
+import { listConfigurations } from './actions/list.js';
 import { manageConfigurations } from './actions/manage.js';
 import { outputShellCommands } from './shell/export.js';
 import { setupPrompts } from './ui/prompts.js';
@@ -21,6 +22,7 @@ function parseArgs(): {
   init: boolean;
   silent: boolean;
   autoLoad: boolean;
+  list: boolean;
   version: boolean;
   help: boolean;
 } {
@@ -29,6 +31,7 @@ function parseArgs(): {
     init: args.includes('init'),
     silent: args.includes('--silent'),
     autoLoad: args.includes('--auto-load'),
+    list: args.includes('--list'),
     version: args.includes('--version'),
     help: args.includes('--help'),
   };
@@ -57,12 +60,14 @@ COMMANDS:
 OPTIONS:
   --silent              Suppress success messages (used by shell hook)
   --auto-load           Auto-load last-used configuration
+  --list                List all providers and tokens
   --version             Show version
   --help                Show this help
 
 EXAMPLES:
   cswitch               Show main menu
   cswitch init          Set up shell integration
+  cswitch --list        List all providers and tokens
 
 CONFIGURATION:
   ~/.cswitch/config.json    Configuration file
@@ -144,6 +149,13 @@ export async function main(): Promise<void> {
     // Output shell commands silently
     const providerName = provider.displayName || provider.baseUrl;
     outputShellCommands(provider.baseUrl, token.value, providerName, token.alias, true);
+    return;
+  }
+
+  // Handle list
+  if (args.list) {
+    debug('Running list action');
+    await listConfigurations(config);
     return;
   }
 
