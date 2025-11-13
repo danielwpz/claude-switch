@@ -79,31 +79,31 @@ description: "Task list for Claude environment switcher implementation"
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T024 [P] [US1] Create contract test for main menu display in tests/contract/main-menu-contract.test.ts (verify menu shows all options)
-- [ ] T025 [P] [US1] Create contract test for switch flow in tests/contract/switch-flow-contract.test.ts (provider → token → env vars)
-- [ ] T026 [P] [US1] Create contract test for add provider flow in tests/contract/add-provider-contract.test.ts (config saved correctly)
+- [X] T024 [P] [US1] Create contract test for main menu display in tests/contract/main-menu-contract.test.ts (verify menu shows all options)
+- [X] T025 [P] [US1] Create contract test for switch flow in tests/contract/switch-flow-contract.test.ts (provider → token → env vars)
+- [X] T026 [P] [US1] Create contract test for add provider flow in tests/contract/add-provider-contract.test.ts (config saved correctly)
 
 ### Integration Tests for User Story 1
 
-- [ ] T027 [US1] Create integration test for main menu flow in tests/integration/main-menu-flow.test.ts
-- [ ] T028 [US1] Create integration test for switch configuration flow in tests/integration/switch-flow.test.ts
-- [ ] T029 [US1] Create integration test for add provider flow in tests/integration/add-provider.test.ts
+- [X] T027 [US1] Create integration test for main menu flow in tests/integration/main-menu-flow.test.ts
+- [X] T028 [US1] Create integration test for switch configuration flow in tests/integration/switch-flow.test.ts
+- [X] T029 [US1] Create integration test for add provider flow in tests/integration/add-provider.test.ts
 
 ### Implementation for User Story 1
 
-- [ ] T030 [P] [US1] Implement main menu component in src/menus/main-menu.ts (displays 4 options: Switch/Add Provider/Add Token/Manage)
-- [ ] T031 [P] [US1] Implement switch menu components in src/menus/switch-menu.ts (provider selection → token selection)
-- [ ] T032 [P] [US1] Implement add menu components in src/menus/add-menu.ts (add provider, add token flows)
-- [ ] T033 [P] [US1] Implement switch action in src/actions/switch.ts (select provider and token, call export.ts)
-- [ ] T034 [P] [US1] Implement add-provider action in src/actions/add-provider.ts (create new provider with first token)
-- [ ] T035 [P] [US1] Implement add-token action in src/actions/add-token.ts (add token to existing provider)
-- [ ] T036 [US1] Implement CLI entry point in src/index.ts (minimal: parse args, show main menu, dispatch to actions)
-- [ ] T037 [P] [US1] Create unit tests for main-menu in tests/unit/main-menu.test.ts
-- [ ] T038 [P] [US1] Create unit tests for switch-menu in tests/unit/switch-menu.test.ts
-- [ ] T039 [P] [US1] Create unit tests for add-menu in tests/unit/add-menu.test.ts
-- [ ] T040 [P] [US1] Create unit tests for switch action in tests/unit/switch.test.ts
-- [ ] T041 [P] [US1] Create unit tests for add-provider action in tests/unit/add-provider.test.ts
-- [ ] T042 [P] [US1] Create unit tests for add-token action in tests/unit/add-token.test.ts
+- [X] T030 [P] [US1] Implement main menu component in src/menus/main-menu.ts (displays 4 options: Switch/Add Provider/Add Token/Manage)
+- [X] T031 [P] [US1] Implement switch menu components in src/menus/switch-menu.ts (provider selection → token selection)
+- [X] T032 [P] [US1] Implement add menu components in src/menus/add-menu.ts (add provider, add token flows)
+- [X] T033 [P] [US1] Implement switch action in src/actions/switch.ts (select provider and token, call export.ts)
+- [X] T034 [P] [US1] Implement add-provider action in src/actions/add-provider.ts (create new provider with first token)
+- [X] T035 [P] [US1] Implement add-token action in src/actions/add-token.ts (add token to existing provider)
+- [X] T036 [US1] Implement CLI entry point in src/index.ts (minimal: parse args, show main menu, dispatch to actions)
+- [X] T037 [P] [US1] Create unit tests for main-menu in tests/unit/main-menu.test.ts
+- [X] T038 [P] [US1] Create unit tests for switch-menu in tests/unit/switch-menu.test.ts
+- [X] T039 [P] [US1] Create unit tests for add-menu in tests/unit/add-menu.test.ts
+- [X] T040 [P] [US1] Create unit tests for switch action in tests/unit/switch.test.ts
+- [X] T041 [P] [US1] Create unit tests for add-provider action in tests/unit/add-provider.test.ts
+- [X] T042 [P] [US1] Create unit tests for add-token action in tests/unit/add-token.test.ts
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
