@@ -4,8 +4,16 @@
  */
 
 import { Config, Provider } from '../config/schema.js';
-import { textPrompt, passwordPrompt, selectPrompt, PromptChoice } from '../ui/prompts.js';
+import {
+  textPrompt,
+  passwordPrompt,
+  selectPrompt,
+  PromptChoice,
+  promptForAnthropicModel,
+  promptForAnthropicSmallFastModel,
+} from '../ui/prompts.js';
 import { validateUrl } from '../config/validation.js';
+import { normalizeModelField } from '../utils/validation.js';
 import { debug } from '../utils/logger.js';
 
 /**
@@ -88,6 +96,8 @@ export async function getNewProviderInput(): Promise<{
   displayName?: string;
   tokenAlias: string;
   tokenValue: string;
+  anthropicModel?: string;
+  anthropicSmallFastModel?: string;
 } | null> {
   debug('Starting add provider flow');
 
@@ -102,7 +112,14 @@ export async function getNewProviderInput(): Promise<{
   const tokenValue = await promptTokenValue();
   if (!tokenValue) return null;
 
-  return { baseUrl, displayName, tokenAlias, tokenValue };
+  // Prompt for model configurations
+  const modelInput = await promptForAnthropicModel();
+  const anthropicModel = normalizeModelField(modelInput || undefined);
+
+  const fastModelInput = await promptForAnthropicSmallFastModel();
+  const anthropicSmallFastModel = normalizeModelField(fastModelInput || undefined);
+
+  return { baseUrl, displayName, tokenAlias, tokenValue, anthropicModel, anthropicSmallFastModel };
 }
 
 /**

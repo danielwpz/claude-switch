@@ -27,6 +27,10 @@ export interface Provider {
   createdAt: string;
   /** Array of authentication tokens (minimum 1 required) */
   tokens: Token[];
+  /** Optional Claude model identifier for ANTHROPIC_MODEL (e.g., "claude-3-5-sonnet-20241022") */
+  anthropicModel?: string;
+  /** Optional Claude model identifier for ANTHROPIC_SMALL_FAST_MODEL (e.g., "claude-3-5-haiku-20241022") */
+  anthropicSmallFastModel?: string;
 }
 
 /**

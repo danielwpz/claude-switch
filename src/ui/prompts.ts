@@ -162,3 +162,27 @@ export function setupPrompts(): void {
     },
   });
 }
+
+/**
+ * Prompt for ANTHROPIC_MODEL configuration
+ * User can provide a model name or leave blank to skip
+ */
+export async function promptForAnthropicModel(current?: string): Promise<string | null> {
+  const message = current
+    ? `Configure ANTHROPIC_MODEL? [${current} or blank to skip]`
+    : 'Configure ANTHROPIC_MODEL? (leave blank to skip)';
+
+  return textPrompt(message, current);
+}
+
+/**
+ * Prompt for ANTHROPIC_SMALL_FAST_MODEL configuration
+ * User can provide a model name or leave blank to skip
+ */
+export async function promptForAnthropicSmallFastModel(current?: string): Promise<string | null> {
+  const message = current
+    ? `Configure ANTHROPIC_SMALL_FAST_MODEL? [${current} or blank to skip]`
+    : 'Configure ANTHROPIC_SMALL_FAST_MODEL? (leave blank to skip)';
+
+  return textPrompt(message, current);
+}

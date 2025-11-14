@@ -36,5 +36,13 @@ export async function switchConfiguration(config: Config, silent: boolean = fals
 
   // Output shell commands to be eval'd by parent shell
   const providerName = provider.displayName || provider.baseUrl;
-  outputShellCommands(provider.baseUrl, token.value, providerName, token.alias, silent);
+  outputShellCommands(
+    provider.baseUrl,
+    token.value,
+    providerName,
+    token.alias,
+    silent,
+    provider.anthropicModel,
+    provider.anthropicSmallFastModel
+  );
 }

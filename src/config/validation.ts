@@ -5,6 +5,7 @@
 
 import { Config, Provider, Token, LastUsed } from './schema.js';
 import { ValidationError } from '../utils/errors.js';
+import { normalizeModelField } from '../utils/validation.js';
 
 /**
  * Validate a URL format
@@ -135,6 +136,10 @@ export function validateProvider(provider: Provider): void {
   if (!provider.createdAt || isNaN(Date.parse(provider.createdAt))) {
     throw new ValidationError('Provider createdAt must be a valid ISO 8601 timestamp', 'createdAt');
   }
+
+  // Normalize model fields
+  provider.anthropicModel = normalizeModelField(provider.anthropicModel);
+  provider.anthropicSmallFastModel = normalizeModelField(provider.anthropicSmallFastModel);
 
   // Validate all tokens
   provider.tokens.forEach((token) => validateToken(token));
