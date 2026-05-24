@@ -22,8 +22,7 @@ export async function addProvider(config: Config): Promise<void> {
     process.exit(0);
   }
 
-  const { baseUrl, displayName, tokenAlias, tokenValue, anthropicModel, anthropicSmallFastModel } =
-    input;
+  const { baseUrl, displayName, tokenAlias, tokenValue, envVars } = input;
 
   // Validate provider doesn't already exist
   try {
@@ -50,8 +49,7 @@ export async function addProvider(config: Config): Promise<void> {
         createdAt: now,
       },
     ],
-    anthropicModel,
-    anthropicSmallFastModel,
+    envVars: envVars?.length ? envVars : undefined,
   };
 
   // Add to config

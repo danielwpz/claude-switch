@@ -3,9 +3,15 @@
  * Allows editing provider or token details
  */
 
-import { Config, Provider, Token } from '../config/schema.js';
+import { Config, Provider, Token, EnvVar } from '../config/schema.js';
 import { selectProviderToManage } from '../menus/manage-menu.js';
-import { selectPrompt, textPrompt, passwordPrompt, PromptChoice } from '../ui/prompts.js';
+import {
+  selectPrompt,
+  textPrompt,
+  passwordPrompt,
+  confirmPrompt,
+  PromptChoice,
+} from '../ui/prompts.js';
 import { writeConfig } from '../config/config.js';
 import { validateUrl } from '../config/validation.js';
 import { debug } from '../utils/logger.js';
@@ -43,6 +49,11 @@ export async function editConfiguration(config: Config): Promise<void> {
       value: 'token-value',
       description: 'Update auth token',
     },
+    {
+      title: 'Edit environment variables',
+      value: 'env-vars',
+      description: 'Add, edit, or remove custom env vars',
+    },
   ];
 
   const editType = await selectPrompt('What would you like to edit?', editChoices);
@@ -63,6 +74,9 @@ export async function editConfiguration(config: Config): Promise<void> {
       break;
     case 'token-value':
       await editTokenValue(provider);
+      break;
+    case 'env-vars':
+      await editEnvVars(provider);
       break;
   }
 
@@ -135,7 +149,7 @@ async function editTokenAlias(provider: Provider): Promise<void> {
       return 'Alias is required';
     }
     if (value.length > 50) {
-      return 'Alias must be 50 characters or less';
+      return 'Token alias must be 50 characters or less';
     }
     // Check uniqueness within provider
     if (provider.tokens.some((t: Token) => t.alias === value && t.alias !== token.alias)) {
@@ -181,4 +195,117 @@ async function editTokenValue(provider: Provider): Promise<void> {
     token.value = newValue;
     debug('Token value updated');
   }
+}
+
+async function editEnvVars(provider: Provider): Promise<void> {
+  // Initialize envVars array if needed
+  if (!provider.envVars) {
+    provider.envVars = [];
+  }
+
+  const actionChoices: PromptChoice[] = [
+    { title: 'Add new env var', value: 'add', description: 'Add a new key-value pair' },
+  ];
+
+  if (provider.envVars.length > 0) {
+    actionChoices.push({
+      title: 'Edit existing env var',
+      value: 'edit',
+      description: 'Modify an existing env var',
+    });
+    actionChoices.push({
+      title: 'Delete env var',
+      value: 'delete',
+      description: 'Remove an env var',
+    });
+  }
+
+  const action = await selectPrompt('What would you like to do with env vars?', actionChoices);
+  if (!action) return;
+
+  switch (action) {
+    case 'add':
+      await addEnvVar(provider);
+      break;
+    case 'edit':
+      await editEnvVar(provider);
+      break;
+    case 'delete':
+      await deleteEnvVar(provider);
+      break;
+  }
+}
+
+async function addEnvVar(provider: Provider): Promise<void> {
+  const key = await textPrompt('Enter env var key:', '', (value: string) => {
+    if (!value || value.trim().length === 0) {
+      return 'Key is required';
+    }
+    if (!/^[A-Z_][A-Z0-9_]*$/i.test(value)) {
+      return 'Key should be alphanumeric with underscores (e.g., ANTHROPIC_MODEL)';
+    }
+    // Check for duplicates
+    if (provider.envVars?.some((e) => e.key === value)) {
+      return 'This key already exists';
+    }
+    return true;
+  });
+  if (!key) return;
+
+  const value = await textPrompt('Enter env var value:', '');
+  if (!value) return;
+
+  provider.envVars!.push({ key: key.trim(), value });
+  debug(`Env var added: ${key}`);
+}
+
+async function editEnvVar(provider: Provider): Promise<void> {
+  const choices: PromptChoice[] = provider.envVars!.map((e: EnvVar) => ({
+    title: `${e.key}=${e.value}`,
+    value: e.key,
+  }));
+
+  const selectedKey = await selectPrompt('Select env var to edit:', choices);
+  if (!selectedKey) return;
+
+  const envVar = provider.envVars!.find((e: EnvVar) => e.key === selectedKey);
+  if (!envVar) return;
+
+  const newKey = await textPrompt('Enter new key:', envVar.key, (value: string) => {
+    if (!value || value.trim().length === 0) {
+      return 'Key is required';
+    }
+    if (!/^[A-Z_][A-Z0-9_]*$/i.test(value)) {
+      return 'Key should be alphanumeric with underscores';
+    }
+    // Check for duplicates (excluding self)
+    if (provider.envVars?.some((e) => e.key === value && e.key !== selectedKey)) {
+      return 'This key already exists';
+    }
+    return true;
+  });
+  if (!newKey) return;
+
+  const newValue = await textPrompt('Enter new value:', envVar.value);
+  if (!newValue) return;
+
+  envVar.key = newKey.trim();
+  envVar.value = newValue;
+  debug(`Env var updated: ${newKey}`);
+}
+
+async function deleteEnvVar(provider: Provider): Promise<void> {
+  const choices: PromptChoice[] = provider.envVars!.map((e: EnvVar) => ({
+    title: `${e.key}=${e.value}`,
+    value: e.key,
+  }));
+
+  const selectedKey = await selectPrompt('Select env var to delete:', choices);
+  if (!selectedKey) return;
+
+  const confirmed = await confirmPrompt(`Delete "${selectedKey}"?`, false);
+  if (!confirmed) return;
+
+  provider.envVars = provider.envVars!.filter((e: EnvVar) => e.key !== selectedKey);
+  debug(`Env var deleted: ${selectedKey}`);
 }

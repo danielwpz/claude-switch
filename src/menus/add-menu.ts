@@ -3,17 +3,15 @@
  * Handles user input for adding new providers and tokens
  */
 
-import { Config, Provider } from '../config/schema.js';
+import { Config, Provider, EnvVar } from '../config/schema.js';
 import {
   textPrompt,
   passwordPrompt,
   selectPrompt,
   PromptChoice,
-  promptForAnthropicModel,
-  promptForAnthropicSmallFastModel,
+  confirmPrompt,
 } from '../ui/prompts.js';
 import { validateUrl } from '../config/validation.js';
-import { normalizeModelField } from '../utils/validation.js';
 import { debug } from '../utils/logger.js';
 
 /**
@@ -96,8 +94,7 @@ export async function getNewProviderInput(): Promise<{
   displayName?: string;
   tokenAlias: string;
   tokenValue: string;
-  anthropicModel?: string;
-  anthropicSmallFastModel?: string;
+  envVars?: EnvVar[];
 } | null> {
   debug('Starting add provider flow');
 
@@ -112,14 +109,58 @@ export async function getNewProviderInput(): Promise<{
   const tokenValue = await promptTokenValue();
   if (!tokenValue) return null;
 
-  // Prompt for model configurations
-  const modelInput = await promptForAnthropicModel();
-  const anthropicModel = normalizeModelField(modelInput || undefined);
+  // Prompt for custom environment variables
+  const envVars = await promptForEnvVars();
 
-  const fastModelInput = await promptForAnthropicSmallFastModel();
-  const anthropicSmallFastModel = normalizeModelField(fastModelInput || undefined);
+  return { baseUrl, displayName, tokenAlias, tokenValue, envVars };
+}
 
-  return { baseUrl, displayName, tokenAlias, tokenValue, anthropicModel, anthropicSmallFastModel };
+/**
+ * Prompt for custom environment variables (loop until user declines)
+ */
+export async function promptForEnvVars(): Promise<EnvVar[]> {
+  debug('Starting env vars prompt flow');
+
+  const envVars: EnvVar[] = [];
+  let shouldContinue = true;
+
+  while (shouldContinue) {
+    const shouldAdd = await confirmPrompt('Add custom environment variable?', false);
+    if (!shouldAdd) {
+      shouldContinue = false;
+      break;
+    }
+
+    const key = await textPrompt('Enter env var key:', '', (value: string) => {
+      if (!value || value.trim().length === 0) {
+        return 'Key is required';
+      }
+      if (!/^[A-Z_][A-Z0-9_]*$/i.test(value)) {
+        return 'Key should be alphanumeric with underscores (e.g., ANTHROPIC_MODEL)';
+      }
+      return true;
+    });
+    if (!key) {
+      shouldContinue = false;
+      break;
+    }
+
+    const value = await textPrompt('Enter env var value:', '');
+    if (!value) {
+      shouldContinue = false;
+      break;
+    }
+
+    envVars.push({ key: key.trim(), value });
+
+    const addMore = await confirmPrompt('Add another environment variable?', false);
+    if (!addMore) {
+      shouldContinue = false;
+      break;
+    }
+  }
+
+  return envVars;
 }
 
 /**

@@ -91,6 +91,13 @@ export function formatHeader(text: string): string {
 }
 
 /**
+ * Format an EnvVar for display
+ */
+export function formatEnvVarRow(envVar: { key: string; value: string }): string {
+  return `    ${chalk.cyan(envVar.key)}=${chalk.gray('"')}${chalk.yellow(envVar.value)}${chalk.gray('"')}`;
+}
+
+/**
  * Format a table row for provider listing
  */
 export function formatProviderRow(
@@ -115,7 +122,7 @@ export function formatTokenRow(token: Token, isActive: boolean = false): string 
 }
 
 /**
- * Format a list of providers and their tokens
+ * Format a list of providers, tokens and env vars
  */
 export function formatProviderList(
   providers: Provider[],
@@ -137,7 +144,15 @@ export function formatProviderList(
       lines.push(formatTokenRow(token, isActiveToken));
     });
 
-    lines.push(''); // Empty line between providers
+    // Show env vars if any
+    if (provider.envVars && provider.envVars.length > 0) {
+      lines.push(chalk.gray('    env vars:'));
+      provider.envVars.forEach((envVar) => {
+        lines.push(formatEnvVarRow(envVar));
+      });
+    }
+
+    lines.push('');
   });
 
   return lines.join('\n');

@@ -28,11 +28,18 @@ export async function launchClaude(config: Config, args: string[]): Promise<void
   }
 
   // Prepare environment variables
-  const env = {
+  const env: Record<string, string | undefined> = {
     ...process.env,
     ANTHROPIC_BASE_URL: provider.baseUrl,
     ANTHROPIC_AUTH_TOKEN: token.value,
   };
+
+  // Add custom env vars
+  if (provider.envVars) {
+    for (const envVar of provider.envVars) {
+      env[envVar.key] = envVar.value;
+    }
+  }
 
   // Print provider and token info to console
   const providerName = provider.displayName || provider.baseUrl;

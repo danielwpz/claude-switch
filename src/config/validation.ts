@@ -5,7 +5,6 @@
 
 import { Config, Provider, Token, LastUsed } from './schema.js';
 import { ValidationError } from '../utils/errors.js';
-import { normalizeModelField } from '../utils/validation.js';
 
 /**
  * Validate a URL format
@@ -137,12 +136,33 @@ export function validateProvider(provider: Provider): void {
     throw new ValidationError('Provider createdAt must be a valid ISO 8601 timestamp', 'createdAt');
   }
 
-  // Normalize model fields
-  provider.anthropicModel = normalizeModelField(provider.anthropicModel);
-  provider.anthropicSmallFastModel = normalizeModelField(provider.anthropicSmallFastModel);
-
   // Validate all tokens
   provider.tokens.forEach((token) => validateToken(token));
+
+  // Validate envVars if present
+  if (provider.envVars) {
+    provider.envVars.forEach((envVar, index) => {
+      if (!envVar.key || envVar.key.trim().length === 0) {
+        throw new ValidationError(`EnvVar at index ${index} has empty key`, 'envVars');
+      }
+      if (!/^[A-Z_][A-Z0-9_]*$/i.test(envVar.key)) {
+        throw new ValidationError(
+          `EnvVar key "${envVar.key}" must be alphanumeric with underscores`,
+          'envVars'
+        );
+      }
+      if (!envVar.value || envVar.value.trim().length === 0) {
+        throw new ValidationError(`EnvVar "${envVar.key}" has empty value`, 'envVars');
+      }
+    });
+
+    // Validate envVar key uniqueness within provider
+    const envKeys = provider.envVars.map((e) => e.key);
+    const uniqueKeys = new Set(envKeys);
+    if (envKeys.length !== uniqueKeys.size) {
+      throw new ValidationError('EnvVar keys must be unique within a provider', 'envVars');
+    }
+  }
 
   // Validate token alias uniqueness within provider
   const aliases = provider.tokens.map((t) => t.alias);

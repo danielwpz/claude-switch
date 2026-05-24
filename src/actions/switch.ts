@@ -42,7 +42,6 @@ export async function switchConfiguration(config: Config, silent: boolean = fals
     providerName,
     token.alias,
     silent,
-    provider.anthropicModel,
-    provider.anthropicSmallFastModel
+    provider.envVars
   );
 }
